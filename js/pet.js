@@ -196,6 +196,7 @@ function subTotalCompra() {
 
 // função executada ao efetuar compra
 function pet_compra() {
+    
     db.transaction(pet_update_db, errorDB, successDB);
 }
 // função que realiza ação de update de estoque
@@ -207,28 +208,41 @@ function pet_update_db(tx) {
     var escQtd= $("#qtdEsc").val();
     var decEstoque = pet_qtd_novo - escQtd;
     
-    //para nova tabela
-    var pet_nome_novo = $("#nome_pet").val();
-    var pet_preco_novo = $("#pet_total").val();
+    //validar 
+    
+    if(escQtd <= 0 ){
+        alert("ERRO, VOCÊ ESCOLHEU UM QUANTIDADE NULA");
+        setTimeout(function(){
+            location.reload(1);
+        }, 0);
+    }
+    //if(escQtd > 0 && pet_qtd_novo >= escQtd && pet_qtd_novo > 0 ){
+        else{
 
-    // update do estoque na bd
-    tx.executeSql('UPDATE Pet SET qtd = "' + decEstoque + '" WHERE id = "' + pet_id_novo + '" ');
-    //cadastra na tabela carrinho
-    tx.executeSql('INSERT INTO Carrinho (nome, qtd, preco) VALUES ("' + pet_nome_novo.toUpperCase() + '", "' + escQtd + '", "' + pet_preco_novo + '")');
+        //para nova tabela
+        var pet_nome_novo = $("#nome_pet").val();
+        var pet_preco_novo = $("#pet_total").val();
 
-    // exibe alerta de sucesso na compra
-    $("#alert_visualizar").append(
-        "<div class='alert alert-success bg-success' role='alert'>" +
-            "<h5 class='text-white'>" + "ADICIONADO AO CARRINHO!" + "</h5>" +
-         "</div>"
-    );
+        // update do estoque na bd
+        tx.executeSql('UPDATE Pet SET qtd = "' + decEstoque + '" WHERE id = "' + pet_id_novo + '" ');
+        //cadastra na tabela carrinho
+        tx.executeSql('INSERT INTO Carrinho (nome, qtd, preco) VALUES ("' + pet_nome_novo.toUpperCase() + '", "' + escQtd + '", "' + pet_preco_novo + '")');
 
-    // telas exibição
-    // recarrega pagina após quase 1seg
-    setTimeout(function(){
-        location.reload(1);
-    }, 1000);
-    $("#tela_carrinho").hide();
+        // exibe alerta de sucesso na compra
+        $("#alert_visualizar").append(
+            "<div class='alert alert-success bg-success' role='alert'>" +
+                "<h5 class='text-white'>" + "ADICIONADO AO CARRINHO!" + "</h5>" +
+            "</div>"
+        );
+        
+        // telas exibição
+        // recarrega pagina após quase 1seg
+        setTimeout(function(){
+            location.reload(1);
+        }, 1000);
+        $("#tela_carrinho").hide();
+    }
+        //}
 }
 
 function modalClose() {
