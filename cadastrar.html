@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <!-- TAGS DO FONEGAP -->
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />  
+  <!-- FIM TAGS DO FONEGAP -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Cadastrar - Pet Gatô</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="" type="">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="css/fontsicons.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Your custom styles (optional) -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Nosso projeto começa aqui -->  
+  <!-- CABEÇALHO -->
+  <nav class="navbar fixed-top navbar-dark info-color">
+      <a class="navbar-brand" href="menu.html">VOLTAR</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">MENU
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                       <a class="nav-link waves-effect waves-light" href="menu.html">MENU INICIAL<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link waves-effect waves-light" data-toggle="modal" data-target="#modalLoginAvatar">ANIMAIS DO PET</a>
+                </li>
+                <li class="nav-item">
+                    <strong><a class="nav-link waves-effect waves-light" onclick="reset();">RESET APP</a></strong>
+                  </li>
+            </ul>
+      </div>
+  </nav>
+  <!-- FIM DO CABEÇALHO -->
+
+  <!-- ID OCULTOS DE REFERÊNCIA -->
+  <input type="hidden" id="pet_id_update">
+  <input type="hidden" id="pet_qtd_update">
+
+  <!-- ID OCULTOS DE REFERÊNCIA -->
+
+  <!-- COMEÇO DO FORMULÁRIO -->
+  <div class="container py-5 my-5">
+      <form class="border border-light p-5 needs-validation" novalidate>
+          <div class="text-center">
+            <p><img src="img/petshop.png" class="img-fluid"alt="Imagem de um pet shop"></p>
+          </div>
+          <p class="h4 mb-4 text-center">CADASTRO DE ANIMAL</p>
+          
+          <label for="pet_nome">Nome</label>
+          <input type="text" class="form-control mb-4" placeholder="Insira o animal" id="pet_nome" required>
+          <div class="invalid-feedback">
+              O nome do animal não pode ter menos que 3 caracteres.
+          </div>
+          
+          <label for="pet_qtd">Quantidade</label>
+          <input type="text" class="form-control mb-4" placeholder="Insira a quantidade" id="pet_qtd" onkeypress="return SomenteNumero(event);" required>
+          <div class="invalid-feedback">
+              A quantidade não pode ser menor ou igual a 0.
+          </div>
+
+          <label for="pet_preco">Preço</label>
+          <input type="text" class="form-control mb-4" placeholder="Insira o seu preço" id="pet_preco" onkeypress="return SomenteNumero(event);" required>
+          <div class="invalid-feedback">
+              O preço não pode ser menor ou igual a 0.
+          </div>
+          
+          <button class="btn btn-info btn-block my-4" type="submit" onclick="pet_insert();">SALVAR</button>
+  
+      </form>
+  
+  </div>
+
+  <!--CARTÃO DO REALIZAR PEDIDO-->
+        <!--Modal: Visualizar Animais-->
+        <div class="modal fade" id="modalLoginAvatar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="py-3 text-center">
+                <a href="menu.html" class="btn-floating btn-sm btn-danger" id="menufechar">FECHAR</a>
+            </div>
+            <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+              <!--Conteudo-->
+              <div class="modal-content">
+                <!--Cabeçalho-->
+                <div class="modal-header">
+                  <img src="img/dog.png" alt="avatar" class="rounded-circle img-responsive">
+                </div>
+                <!--Corpo do modal-->
+                <div class="modal-body text-center mb-1">
+                  <h5 class="mt-1 mb-2">Animais Cadastrados</h5>
+                  <!--Table-->
+                  <table id="tablePreview" class="table table-hover table-sm table-striped">
+                    <!--Table head-->
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>NOME</th>
+                          <th>QTD</th>
+                          <th>PREÇO</th>
+                          <th>CARRINHO</th>
+                        </tr>
+                      </thead>
+                    <!--Table head-->
+                    <tbody id="pet_listagem">
+                    <!--AQUI VAI FAZER A LISTAGEM DOS CONTEÚDOS DA TABELA-->    
+                    </tbody>
+                  </table>
+                  <div id="alert_visualizar">
+  
+                  </div>
+                </div>
+                <!--/.Content-->
+            </div>
+          </div>
+          <div class="py-3 text-center">
+              <a href="menu.html" class="btn-floating btn-sm btn-danger" id="menufechar">FECHAR</a>
+          </div>
+          <!--Modal: FIM DE VISUALIZAR OS ANIMAIS-->
+          </div>
+        </section>
+    </div>
+
+    <!-- Modal carrinho de compras-->
+  <div class="modal fade" id="tela_carrinho" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="TituloModalCentralizado">SEU CARRINHO <i class="fa fa-shopping-cart pl-1"></i></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" onclick="modalClose()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+                <h5 class="mb-3" id="nomeCart">ANIMAL: </h5>
+                <h5><h5 class="mb-3" id="qtdCart">QUANTIDADE: </h5> 
+                <h5 class="mb-3" id="valorCart">VALOR:R$ </h5>
+                <hr>
+                <h5 class="card-text">QUANTIDADE DESEJADA: </h5>
+                <input type="text" class="form-control my-3 escQtdSub" id="qtdEsc" placeholder="digite sua quantidade desejada" onkeyup="subTotalCompra()" required>
+                <p><h5 class="card-text">SUB-TOTAL R$:</h5> <p id="subtot"></p>
+        </div>
+        <div class="modal-footer">
+            <div class="text-center">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm" onclick="pet_compra()">
+                  ADICIONAR AO CARRINHO
+              </button>
+            </div>
+        </div>
+    </div>
+    </div>
+  </div> 
+  <!-- Modal carrinho de compras-->
+  
+
+ 
+  
+  <!-- Nosso projeto termina aqui -->
+
+  
+ 
+  <!--JAVA SCRIPT PERSONALIZADO-->
+  <script type="text/javascript" src="js/pet.js"></script>
+  <!-- jQuery -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Your custom scripts (optional) -->
+  <script type="text/javascript">
+    //PARA CHAMAR A LISTAGEM NO MODAL
+    pet_view();
+  </script>
+
+</body>
+</html>
